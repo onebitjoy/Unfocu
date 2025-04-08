@@ -6,6 +6,7 @@ export async function createUserAccount(user: INewUser) {
 
   console.log(user.email)
   try {
+    // appwrite uses account.create function with positional arguments to create an account
     const newAccount = await account.create(
       ID.unique(),
       user.email,

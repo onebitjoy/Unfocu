@@ -49,7 +49,7 @@ const AuthLayout = () => {
         <Navigate to="/" /> :
         <section className="flex flex-col flex-1 items-center justify-center">
           {/* Animation */}
-          <div className="animation-container">
+          {/* <div className="animation-container">
             <div className="burst">
               <div className="line"></div>
               <div className="line"></div>
@@ -60,7 +60,7 @@ const AuthLayout = () => {
               <div className="line"></div>
               <div className="line"></div>
             </div>
-          </div>
+          </div> */}
 
           {/* ========================= */}
           {/* Outlet Box */}
