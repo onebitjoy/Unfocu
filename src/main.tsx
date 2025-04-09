@@ -8,13 +8,13 @@ import AuthProvider from "./context/AuthContext";
 const root = document.getElementById("root")
 
 createRoot(root!).render(
-  <StrictMode>
-    <BrowserRouter>
-      <QueryProvider>
-        <AuthProvider>
-          <App />
-        </AuthProvider>
-      </QueryProvider>
-    </BrowserRouter>
-  </StrictMode>
+  // <StrictMode>
+  <BrowserRouter>
+    <QueryProvider>
+      <AuthProvider>
+        <App />
+      </AuthProvider>
+    </QueryProvider>
+  </BrowserRouter>
+  // </StrictMode>
 );

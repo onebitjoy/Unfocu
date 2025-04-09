@@ -1,8 +1,9 @@
 import { getCurrentUserAccount } from "@/lib/appwrite/api"
-import { appwriteConfig } from "@/lib/appwrite/config"
+import { account, appwriteConfig } from "@/lib/appwrite/config"
 import { IContextType, IUser } from "@/types"
 import { createContext, useContext, useEffect, useState } from "react"
 import { useNavigate } from "react-router"
+import { toast } from "sonner"
 
 
 const DEFAULT_USER = {
@@ -57,32 +58,25 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     }
   }
 
-  useEffect(() => {
-    // const cookieFallback = localStorage.getItem("cookieFallback");
-    const cookieFallback = localStorage.getItem(`a_session_${appwriteConfig.projectId}`);
-    console.log("cookieFallback:", cookieFallback)
-    if (
-      cookieFallback === "[]" ||
-      cookieFallback === null ||
-      cookieFallback === undefined
-    ) {
-      navigate("/auth/sign-in");
-    }
-
-    checkAuthUser();
-  }, []);
-
-
   // useEffect(() => {
-  //   const init = async () => {
-  //     setIsLoading(true);
-  //     const isLoggedIn = await checkAuthUser();
-  //     if (!isLoggedIn) {
-  //       navigate("/auth/sign-in");
+  //   async function checkAuth() {
+  //     const accountInfo = await account.get()
+  //     if (accountInfo.$id) {
+  //       navigate("/")
+  //     } else {
+  //       navigate("/auth/sign-in")
   //     }
-  //   };
-  //   init();
-  // }, []);
+  //   }
+  //   checkAuth()
+
+  // }, [navigate])
+
+  useEffect(() => {
+    const cookieFallback = localStorage.getItem("cookieFallback")
+    if (cookieFallback === "[]" || cookieFallback === null) { navigate("/auth/sign-in") }
+    checkAuthUser()
+  }, [navigate])
+
 
   return <AuthContext.Provider value={{
     user, setUser, isLoading, isAuthenticated, setIsAuthenticated, checkAuthUser

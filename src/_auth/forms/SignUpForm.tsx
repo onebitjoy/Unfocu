@@ -32,6 +32,7 @@ const SignUpForm = () => {
 
   // navigate
   const navigate = useNavigate()
+
   // Form Controller
   const form = useForm<z.infer<Omit<typeof SignUpFormValidation, "confirmPassword">>>({
     resolver: zodResolver(SignUpFormValidation),
