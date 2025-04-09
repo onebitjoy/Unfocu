@@ -145,7 +145,7 @@ const SignUpForm = () => {
             </FormItem>
           )}
         />
-        <Button type="submit" className="text-sm sm:text-base md:text-lg lr:text-xl" disabled={isSignInUser || isCreatingUser}>{
+        <Button type="submit" className="text-sm sm:text-base md:text-lg lr:text-xl" disabled={isSignInUser || isCreatingUser || isUserLoading}>{
           isCreatingUser ? "Creating your account..." : isSignInUser ? "Signing you in..." : "Submit"
         }</Button>
       </form>

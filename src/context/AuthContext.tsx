@@ -1,9 +1,9 @@
 import { getCurrentUserAccount } from "@/lib/appwrite/api"
-import { account, appwriteConfig } from "@/lib/appwrite/config"
+// import { account, appwriteConfig } from "@/lib/appwrite/config"
 import { IContextType, IUser } from "@/types"
 import { createContext, useContext, useEffect, useState } from "react"
 import { useNavigate } from "react-router"
-import { toast } from "sonner"
+// import { toast } from "sonner"
 
 
 const DEFAULT_USER = {
