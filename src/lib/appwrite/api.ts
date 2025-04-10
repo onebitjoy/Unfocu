@@ -1,6 +1,7 @@
-import { ID, Query } from "appwrite";
+import { AppwriteException, ID, Query } from "appwrite";
 import { account, appwriteConfig, avatars, databases } from "./config";
 import { INewUser } from "@/types";
+import { toast } from "sonner";
 
 
 //Create User
@@ -30,6 +31,10 @@ export async function createUserAccount(user: INewUser) {
     })
     return newUser
   } catch (error) {
+    if (error instanceof AppwriteException && error.code === 409) {
+      toast.error("A user with the same id, email, or phone already exists.");
+      return null;
+    }
     console.error(error)
     return error
   }
@@ -62,61 +67,52 @@ export async function signInUserAccount(user: {
 }) {
   try {
     const session = await account.createEmailPasswordSession(user.email, user.password)
-    console.log("Session:", session)
     return session
-  } catch (error) {
-    console.log("User sign in error")
-    console.log(error)
+  } catch (error: unknown) {
+    if (error instanceof AppwriteException) {
+      if (error.code === 401) {
+        toast.error("Invalid email or password.");
+        return { error: "Invalid email or password." };
+      } else if (error.code === 429) {
+        toast.error("Too many requests. Please try after some time");
+        return { error: "Invalid email or password." };
+      } else {
+        console.error("User sign in error:", error.message);
+        return { error: error.message };
+      }
+    } else {
+      console.error("An unexpected error occurred:", error);
+      return { error: "An unexpected error occurred." };
+    }
   }
 }
 
-// // Get Current Account 
-// export async function getCurrentUserAccount() {
-//   try {
-//     // Appwrite writes the cookie to Session Storage automatically.
-//     // account.get() takes that cookie and returns the account details
-//     const currentAccount = await account.get()
-//     if (!currentAccount) throw Error
-//     const currentUser = await databases.listDocuments(
-//       appwriteConfig.databaseId,
-//       appwriteConfig.usersCollectionId,
-//       [Query.equal('accountId', currentAccount.$id)]
-//     )
-//     if (!currentUser) throw Error;
-//     return currentUser.documents[0]
-//   } catch (error) {
-//     console.log(error)
-//   }
-// }
-
-
-/**
- * 
- *{
-    "message": "User (role: guests) missing scope (account)",
-    "code": 401,
-    "type": "general_unauthorized_scope",
-    "version": "1.6.2"
-}
- */
 export async function getCurrentUserAccount() {
   try {
-    const session = await account.getSession('current');
-    if (!session) throw new Error('No active session');
-
     const currentAccount = await account.get();
-    if (!currentAccount) throw new Error('No account found');
+    if (!currentAccount) {
+      console.warn('User not logged in or session expired.');
+      return null; // Indicate that no user is logged in
+    }
 
     const currentUser = await databases.listDocuments(
       appwriteConfig.databaseId,
       appwriteConfig.usersCollectionId,
       [Query.equal('accountId', currentAccount.$id)]
     );
-    if (!currentUser) throw new Error('User document not found');
+
+    if (!currentUser || currentUser.documents.length === 0) {
+      console.warn('User document not found in database.');
+      return null; // Indicate that the user document was not found
+    }
 
     return currentUser.documents[0];
   } catch (error) {
-    console.log('Error in getCurrentUserAccount:', error);
+    if (error instanceof AppwriteException && error.code === 401) {
+      console.warn("User not logged in or session expired.");
+      return null;
+    }
+    console.error("Error in getCurrentUserAccount:", error);
     return null;
   }
 }

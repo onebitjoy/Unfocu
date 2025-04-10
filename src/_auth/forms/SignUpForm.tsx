@@ -1,7 +1,7 @@
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
-import { SignUpFormValidation } from "@/lib"
+import { SignUpFormValidation } from "@/lib/validation"
 
 // UI imports
 import { Button } from "@/components/ui/button"
@@ -57,7 +57,6 @@ const SignUpForm = () => {
     // TODO : Login user automatically
     const session =
       await signInUserAccount({ email: values.email, password: values.password })
-    console.log(session)
 
     if (!session) {
       toast.error("Sign in failed. Please try signing into your account.")
@@ -73,12 +72,15 @@ const SignUpForm = () => {
     }
   }
 
-  console.log("SignUpForm rendered");
-
   // Sign in return
   return (<Form {...form} >
     <div className="flex flex-col justify-center items-center pb-6">
-      <h1 className="text-3xl font-bold interfont text-[1rem] sm:text-[1.4rem] md:text-[1.6rem] lr:text-[1.8rem]">Create a new account</h1>
+      <h1 className="text-3xl font-bold interfont text-[1rem] sm:text-[1.4rem] md:text-[1.6rem] lr:text-[1.8rem]">
+        Create a new account
+      </h1>
+      <h2 className="text-gray-500 text-sm mt-2">
+        Enter your details below to register.
+      </h2>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 w-100 sm:w-120 md:w-140 lr:w-160 max-w-200 px-8 py-6">
         <FormField
           control={form.control}

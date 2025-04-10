@@ -50,6 +50,7 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       return false;
     } catch (error) {
       console.log("Auth check failed:", error);
+      setIsAuthenticated(false)
       return false;
     } finally {
       setIsLoading(false);
@@ -60,13 +61,11 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     const authenticate = async () => {
       const isLoggedIn = await checkAuthUser();
 
-      // to skip redirection when on sign up page
+      // // to skip redirection when on sign up page
       const currentPath = window.location.pathname;
-      const isSignUpRoute = ["/auth/sign-up"].includes(currentPath);
+      const isAuthRoute = ["/auth/sign-up", "/auth/sign-in"].includes(currentPath);
 
-      console.log(currentPath, isSignUpRoute)
-
-      if (!isLoggedIn && !isSignUpRoute) {
+      if (!isLoggedIn && !isAuthRoute) {
         navigate("/auth/sign-in");
       }
     };

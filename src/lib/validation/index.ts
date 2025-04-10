@@ -35,3 +35,11 @@ export const SignUpFormValidation =
       path: ["confirmPassword"],
       message: "Passwords do not match",
     })
+
+
+export const SignInFormValidation = z.object({
+  email: z.string().nonempty().email({ message: "Please enter a valid email" }),
+  password: z.string().min(8).nonempty()
+}).required(
+  { email: true, password: true }
+)
