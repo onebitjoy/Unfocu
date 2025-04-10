@@ -70,21 +70,53 @@ export async function signInUserAccount(user: {
   }
 }
 
-// Get Current Account 
+// // Get Current Account 
+// export async function getCurrentUserAccount() {
+//   try {
+//     // Appwrite writes the cookie to Session Storage automatically.
+//     // account.get() takes that cookie and returns the account details
+//     const currentAccount = await account.get()
+//     if (!currentAccount) throw Error
+//     const currentUser = await databases.listDocuments(
+//       appwriteConfig.databaseId,
+//       appwriteConfig.usersCollectionId,
+//       [Query.equal('accountId', currentAccount.$id)]
+//     )
+//     if (!currentUser) throw Error;
+//     return currentUser.documents[0]
+//   } catch (error) {
+//     console.log(error)
+//   }
+// }
+
+
+/**
+ * 
+ *{
+    "message": "User (role: guests) missing scope (account)",
+    "code": 401,
+    "type": "general_unauthorized_scope",
+    "version": "1.6.2"
+}
+ */
 export async function getCurrentUserAccount() {
   try {
-    // Appwrite writes the cookie to Session Storage automatically.
-    // account.get() takes that cookie and returns the account details
-    const currentAccount = await account.get()
-    if (!currentAccount) throw Error
+    const session = await account.getSession('current');
+    if (!session) throw new Error('No active session');
+
+    const currentAccount = await account.get();
+    if (!currentAccount) throw new Error('No account found');
+
     const currentUser = await databases.listDocuments(
       appwriteConfig.databaseId,
       appwriteConfig.usersCollectionId,
       [Query.equal('accountId', currentAccount.$id)]
-    )
-    if (!currentUser) throw Error;
-    return currentUser.documents[0]
+    );
+    if (!currentUser) throw new Error('User document not found');
+
+    return currentUser.documents[0];
   } catch (error) {
-    console.log(error)
+    console.log('Error in getCurrentUserAccount:', error);
+    return null;
   }
 }
