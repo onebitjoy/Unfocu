@@ -32,21 +32,21 @@ const SignInForm = () => {
   // submit function
   async function onSubmit(values: z.infer<typeof SignInFormValidation>) {
 
-    const userSession = signInUserAccount({ email: values.email, password: values.password })
+    const userSession = await signInUserAccount({ email: values.email, password: values.password })
 
-    if (userSession.error) {
-      toast.error("Unable to sign in")
+    if (userSession && 'error' in userSession) {
+      toast.error(userSession?.error);
     } else {
-      const isLoggedIn = await checkAuthUser()
+      const isLoggedIn = await checkAuthUser();
       if (isLoggedIn) {
-        form.reset()
-        navigate("/")
+        form.reset();
+        navigate("/");
       } else {
-        toast.error("Sign in failed. Please try again later.")
+        toast.error("Sign in failed. Please try again later.");
       }
     }
-
   }
+
   return (
     <Form  {...form}>
       <div className="flex flex-col justify-center items-center pb-6">
@@ -91,7 +91,7 @@ const SignInForm = () => {
             isLoggingIn ? "Signing in" : "Sign In"
           }</Button>
         </form>
-        <div className="hover:underline"><Link to={"/auth/sign-up"}>Want to create an account?<span>Register account</span></Link></div>
+        <div className="hover:underline hover:underline-offset-4"><Link to={"/auth/sign-up"}>Want to create an account?<span className="ml-1 font-bold hover:no-underline underline underline-offset-4">Register account</span></Link></div>
       </div>
     </Form>
   )
