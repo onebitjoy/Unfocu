@@ -87,6 +87,16 @@ export async function signInUserAccount(user: {
   }
 }
 
+// Log out user
+export async function logOutUserAccount() {
+  try {
+    const session = await account.deleteSession('current')
+    return session
+  } catch (error) {
+    console.log(error)
+  }
+}
+
 export async function getCurrentUserAccount() {
   try {
     const currentAccount = await account.get();
