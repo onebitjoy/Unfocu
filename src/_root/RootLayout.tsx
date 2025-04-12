@@ -6,14 +6,14 @@ import { Outlet } from "react-router"
 export const RootLayout = () => {
 
   return (
-    <main className="w-full">
+    <main className="w-full  flex flex-col">
       <Topbar />
-      <Sidebar />
-
-      <section className="flex flex-1 h-full">
-        <Outlet />
-      </section>
-
+      <div className="flex flex-1">
+        <Sidebar />
+        <section className="flex flex-1 h-full">
+          <Outlet />
+        </section>
+      </div>
       <Bottombar />
     </main>
   )

@@ -50,7 +50,7 @@ const SignInForm = () => {
   return (
     <Form  {...form}>
       <div className="flex flex-col justify-center items-center pb-6">
-        <h1 className="text-3xl font-bold interfont text-[1rem] sm:text-[1.4rem] md:text-[1.6rem] lr:text-[1.8rem]">
+        <h1 className="text-3xl font-bold text-[1rem] sm:text-[1.4rem] md:text-[1.6rem] lr:text-[1.8rem]">
           Log in to your account
         </h1>
         <h2 className="text-gray-500 text-sm mt-2">

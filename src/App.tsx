@@ -11,7 +11,7 @@ import { RootLayout } from "./_root/RootLayout";
 import { HomePage } from "./_root/pages";
 
 function App() {
-  return <main className="flex h-screen overflow-auto scrollbar-hidden">
+  return <main className="flex h-screen overflow-auto scrollbar-hidden interfont">
     <Routes>
       {/* private routes */}
       <Route path="auth" element={<AuthLayout />}>

@@ -1,6 +1,6 @@
 const Bottombar = () => {
   return (
-    <div>Bottombar</div>
+    <div className="md:hidden block">Bottombar</div>
   )
 }
 
