@@ -9,14 +9,15 @@ const AuthLayout = () => {
     <>
       {isUserAuthenticated ?
         <Navigate to="/" /> :
-        <section className="flex flex-col flex-1 items-center justify-start">
-
+        <section className="flex flex-col flex-1 justify-start items-center dark:bg-black pt-4">
           {/* Outlet Box */}
-          <div className="z-1000 flex flex-col justify-center items-center ">
-            <div className="mt-16">
-              <img src="/assets/Unfocu.png" alt="Unfocu Logo" className="w-20 h-20 sm:w-30 sm:h-30 md:w-40 md:h-40" />
+          <div className="pt-8">
+            <div className="flex justify-center items-center gap-x-2 pt-4 pb-8">
+              <img src="/assets/PixagramIcon.png" alt="homepage" className="size-8" />
+              <div className="font-bold text-black dark:text-white text-2xl">Pixagram</div>
             </div>
-            <div className="z-1000">
+
+            <div className="">
               <Outlet />
             </div>
           </div>

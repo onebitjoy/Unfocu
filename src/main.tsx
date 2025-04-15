@@ -4,17 +4,21 @@ import App from "./App";
 import { QueryProvider } from "./lib/react-query/QueryProvider";
 import { BrowserRouter } from "react-router";
 import AuthProvider from "./context/AuthContext";
+import { ThemeProvider } from "./context/ThemeContext";
+import { StrictMode } from "react";
 
 const root = document.getElementById("root")
 
 createRoot(root!).render(
-  // <StrictMode>
-  <BrowserRouter>
-    <QueryProvider>
-      <AuthProvider>
-        <App />
-      </AuthProvider>
-    </QueryProvider>
-  </BrowserRouter>
-  // </StrictMode>
+  <StrictMode>
+    <ThemeProvider>
+      <BrowserRouter>
+        <QueryProvider>
+          <AuthProvider>
+            <App />
+          </AuthProvider>
+        </QueryProvider>
+      </BrowserRouter>
+    </ThemeProvider>
+  </StrictMode>
 );

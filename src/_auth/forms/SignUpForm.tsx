@@ -75,19 +75,19 @@ const SignUpForm = () => {
   // Sign in return
   return (<Form {...form} >
     <div className="flex flex-col justify-center items-center pb-6">
-      <h1 className="text-3xl font-bold text-[1rem] sm:text-[1.4rem] md:text-[1.6rem] lr:text-[1.8rem]">
+      <h1 className="font-bold text-[1rem] text-white lr:text-[1.8rem] sm:text-[1.4rem] md:text-[1.6rem] text-3xl">
         Create a new account
       </h1>
-      <h2 className="text-gray-500 text-sm mt-2">
+      <h2 className="mt-2 text-gray-500 text-sm">
         Enter your details below to register.
       </h2>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 w-100 sm:w-120 md:w-140 lr:w-160 max-w-200 px-8 py-6">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 px-2 sm:px-8 py-6 w-80 lr:w-160 sm:w-120 md:w-140 max-w-200">
         <FormField
           control={form.control}
           name="name"
           render={({ field }) => (
             <FormItem>
-              <FormLabel className="text-sm sm:text-base md:text-lg lr:text-xl">Name</FormLabel>
+              <FormLabel className="dark:text-white text-sm sm:text-base md:text-lg lr:text-xl">Name</FormLabel>
               <FormControl>
                 <Input placeholder="name" {...field} />
               </FormControl>
@@ -100,7 +100,7 @@ const SignUpForm = () => {
           name="username"
           render={({ field }) => (
             <FormItem>
-              <FormLabel className="text-sm sm:text-base md:text-lg lr:text-xl">Username</FormLabel>
+              <FormLabel className="dark:text-white text-sm sm:text-base md:text-lg lr:text-xl">Username</FormLabel>
               <FormControl>
                 <Input placeholder="username" {...field} />
               </FormControl>
@@ -113,7 +113,7 @@ const SignUpForm = () => {
           name="email"
           render={({ field }) => (
             <FormItem>
-              <FormLabel className="text-sm sm:text-base md:text-lg lr:text-xl">Email</FormLabel>
+              <FormLabel className="dark:text-white text-sm sm:text-base md:text-lg lr:text-xl">Email</FormLabel>
               <FormControl>
                 <Input placeholder="email" {...field} />
               </FormControl>
@@ -126,7 +126,7 @@ const SignUpForm = () => {
           name="password"
           render={({ field }) => (
             <FormItem>
-              <FormLabel className="text-sm sm:text-base md:text-lg lr:text-xl">Password</FormLabel>
+              <FormLabel className="dark:text-white text-sm sm:text-base md:text-lg lr:text-xl">Password</FormLabel>
               <FormControl>
                 <Input placeholder="password" {...field} />
               </FormControl>
@@ -139,7 +139,7 @@ const SignUpForm = () => {
           name="confirmPassword"
           render={({ field }) => (
             <FormItem>
-              <FormLabel className="text-sm sm:text-base md:text-lg lr:text-xl">Confirm Password</FormLabel>
+              <FormLabel className="dark:text-white text-sm sm:text-base md:text-lg lr:text-xl">Confirm Password</FormLabel>
               <FormControl>
                 <Input placeholder="re-enter password" {...field} />
               </FormControl>
@@ -151,7 +151,7 @@ const SignUpForm = () => {
           isCreatingUser ? "Creating your account..." : isSignInUser ? "Signing you in..." : "Submit"
         }</Button>
       </form>
-      <div className="hover:underline"><Link to={"/auth/sign-in"}>Already have an account? <span>Sign-In</span></Link></div>
+      <div className="dark:text-neutral-200 hover:underline hover:underline-offset-2"><Link to={"/auth/sign-in"}>Already have an account? <span className="font-semibold underline underline-offset-2">Sign-In</span></Link></div>
     </div >
   </Form >
   )
