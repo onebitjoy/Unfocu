@@ -1,10 +1,10 @@
-import { useThemeContext } from "@/context/ThemeContext"
+import { useThemeContext } from "@/context"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "../ui/dropdown-menu"
 import { DropdownMenuItem } from "../ui/dropdown-menu"
 import DarkModeSwitcher from "./DarkModeSwitcher"
 import { useLogOutUserAccount } from "@/lib/react-query/queryMutation"
 import { useEffect } from "react"
-import { useNavigate } from "react-router"
+import { useNavigate } from "react-router-dom"
 
 const SettingsMenu = () => {
   const { isDark } = useThemeContext()

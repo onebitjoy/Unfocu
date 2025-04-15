@@ -1,16 +1,17 @@
 
 import "./styles/index.css";
 
-import { Route, Routes } from "react-router";
+import { Route, Routes } from "react-router-dom";
 
 import { Toaster } from "@/components/ui/sonner"
 import AuthLayout from "./_auth/AuthLayout";
 import SignInForm from "./_auth/forms/SignInForm";
 import SignUpForm from "./_auth/forms/SignUpForm";
 import { RootLayout } from "./_root/RootLayout";
-import { HomePage } from "./_root/pages";
-import { useThemeContext } from "./context/ThemeContext";
+import { HomePage, AllUsers, CreatePost, EditPost, Explore, PostDetails, Profile, Saved, UpdateProfile } from "./_root/pages";
+import { useThemeContext } from "./context";
 import { useUserContext } from "./context/AuthContext";
+import Notifications from "./_root/pages/Notifications";
 
 function App() {
 
@@ -29,7 +30,17 @@ function App() {
       {/* public routes */}
       <Route element={<RootLayout />}>
         <Route index element={<HomePage />} />
+        <Route path="notifications" element={<Notifications />} />
+        <Route path="all-users" element={<AllUsers />} />
+        <Route path="create-post" element={<CreatePost />} />
+        <Route path="explore" element={<Explore />} />
+        <Route path="saved" element={<Saved />} />
+        <Route path="edit-post/:id" element={<EditPost />} />
+        <Route path="posts/:id" element={<PostDetails />} />
+        <Route path="profile/:id" element={<Profile />} />
+        <Route path="update-profile/:id" element={<UpdateProfile />} />
       </Route>
+
     </Routes>
     <Toaster richColors />
   </main>

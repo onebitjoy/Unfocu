@@ -15,11 +15,11 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
-import { Link } from "react-router"
+import { Link } from "react-router-dom"
 import { toast } from "sonner"
 import { useCreateUserAccount, useSignInUserAccount } from "@/lib/react-query/queryMutation"
 import { useUserContext } from "@/context/AuthContext"
-import { useNavigate } from "react-router"
+import { useNavigate } from "react-router-dom"
 
 // Sign Up form component
 const SignUpForm = () => {

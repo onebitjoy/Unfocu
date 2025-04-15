@@ -1,5 +1,5 @@
 import { useUserContext } from "@/context/AuthContext"
-import { Navigate, Outlet } from "react-router"
+import { Navigate, Outlet } from "react-router-dom"
 
 const AuthLayout = () => {
 

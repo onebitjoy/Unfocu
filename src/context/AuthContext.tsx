@@ -1,56 +1,65 @@
-import { getCurrentUserAccount } from "@/lib/appwrite/api";
-import { IContextType, IUser } from "@/types";
+import { useNavigate } from "react-router-dom";
 import { createContext, useContext, useEffect, useState } from "react";
-import { useNavigate } from "react-router";
 
-const DEFAULT_USER = {
+import { IUser } from "@/types";
+import { getCurrentUserAccount } from "@/lib/appwrite/api";
+
+export const INITIAL_USER = {
   id: "",
   name: "",
   username: "",
   email: "",
   imageUrl: "",
-  bio: ""
+  bio: "",
 };
 
-const INITIAL_STATE: IContextType = {
-  user: DEFAULT_USER,
-  isLoading: true,
+const INITIAL_STATE = {
+  user: INITIAL_USER,
+  isLoading: false,
   isAuthenticated: false,
   setUser: () => { },
   setIsAuthenticated: () => { },
-  checkAuthUser: async () => false
+  checkAuthUser: async () => false as boolean,
+};
+
+type IContextType = {
+  user: IUser;
+  isLoading: boolean;
+  setUser: React.Dispatch<React.SetStateAction<IUser>>;
+  isAuthenticated: boolean;
+  setIsAuthenticated: React.Dispatch<React.SetStateAction<boolean>>;
+  checkAuthUser: () => Promise<boolean>;
 };
 
 const AuthContext = createContext<IContextType>(INITIAL_STATE);
 
-const AuthProvider = ({ children }: { children: React.ReactNode }) => {
-  const [user, setUser] = useState<IUser>(DEFAULT_USER);
-  const [isLoading, setIsLoading] = useState(true);
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+export default function AuthProvider({ children }: { children: React.ReactNode }) {
   const navigate = useNavigate();
+  const [user, setUser] = useState<IUser>(INITIAL_USER);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const checkAuthUser = async () => {
+    setIsLoading(true);
     try {
-      setIsLoading(true);
-      const currentUser = await getCurrentUserAccount();
-
-      if (currentUser) {
+      const currentAccount = await getCurrentUserAccount();
+      if (currentAccount) {
         setUser({
-          id: currentUser.$id,
-          name: currentUser.name,
-          username: currentUser.username,
-          email: currentUser.email,
-          imageUrl: currentUser.imageUrl,
-          bio: currentUser.bio
+          id: currentAccount.$id,
+          name: currentAccount.name,
+          username: currentAccount.username,
+          email: currentAccount.email,
+          imageUrl: currentAccount.imageUrl,
+          bio: currentAccount.bio,
         });
         setIsAuthenticated(true);
+
         return true;
       }
 
       return false;
     } catch (error) {
-      console.log("Auth check failed:", error);
-      setIsAuthenticated(false)
+      console.error(error);
       return false;
     } finally {
       setIsLoading(false);
@@ -58,38 +67,28 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   useEffect(() => {
-    const authenticate = async () => {
-      const isLoggedIn = await checkAuthUser();
+    const cookieFallback = localStorage.getItem("cookieFallback");
+    if (
+      cookieFallback === "[]" ||
+      cookieFallback === null ||
+      cookieFallback === undefined
+    ) {
+      navigate("/auth/sign-in");
+    }
 
-      // // to skip redirection when on sign up page
-      const currentPath = window.location.pathname;
-      const isAuthRoute = ["/auth/sign-up", "/auth/sign-in"].includes(currentPath);
+    checkAuthUser();
+  }, []);
 
-      if (!isLoggedIn && !isAuthRoute) {
-        navigate("/auth/sign-in");
-      }
-    };
+  const value = {
+    user,
+    setUser,
+    isLoading,
+    isAuthenticated,
+    setIsAuthenticated,
+    checkAuthUser,
+  };
 
-    authenticate();
-  }, [navigate]);
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
+}
 
-  return (
-    <AuthContext.Provider
-      value={{
-        user,
-        setUser,
-        isLoading,
-        isAuthenticated,
-        setIsAuthenticated,
-        checkAuthUser
-      }}
-    >
-      {!isLoading && children}
-    </AuthContext.Provider>
-  );
-};
-
-export default AuthProvider;
-
-// eslint-disable-next-line react-refresh/only-export-components
 export const useUserContext = () => useContext(AuthContext);

@@ -1,6 +1,6 @@
 // import { useThemeContext } from "@/context/ThemeContext";
 
-import { useThemeContext } from "@/context/ThemeContext";
+import { useThemeContext } from "@/context"
 
 const DarkModeSwitcher = () => {
 
