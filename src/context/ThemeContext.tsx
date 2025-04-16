@@ -1,27 +1,36 @@
-import { createContext, useState, ReactNode, useEffect, useMemo } from 'react';
+import { createContext, ReactNode, useEffect, useState } from "react";
 
-interface ThemeContextType {
-  isDark: boolean;
-  toggleTheme: () => void;
+type ThemeContextType = {
+  isDark: boolean,
+  toggleTheme: () => void
 }
 
-export const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
+export const ThemeContext = createContext<ThemeContextType | undefined>(undefined)
 
 export const ThemeProvider = ({ children }: { children: ReactNode }) => {
-  // the default theme is the browser theme set by user
   const [isDark, setIsDark] = useState<boolean>(false);
 
-  const toggleTheme = () => setIsDark(prev => !prev);
-
-  const value = useMemo(() => ({ isDark, toggleTheme }), [isDark]);
-
   useEffect(() => {
-    const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-    setIsDark(prefersDark);
-  }, [])
+    const storedTheme = localStorage.getItem("theme");
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const shouldUseDark = storedTheme === "dark" || (!storedTheme && prefersDark);
+
+    setIsDark(shouldUseDark);
+    document.documentElement.classList.toggle("dark", shouldUseDark);
+    document.documentElement.classList.toggle("light", !shouldUseDark);
+  }, []);
+
+  const toggleTheme = () => {
+    const newTheme = isDark ? "light" : "dark";
+    localStorage.setItem("theme", newTheme);
+    setIsDark(!isDark);
+
+    document.documentElement.classList.toggle("dark", !isDark);
+    document.documentElement.classList.toggle("light", isDark);
+  };
 
   return (
-    <ThemeContext.Provider value={value}>
+    <ThemeContext.Provider value={{ isDark, toggleTheme }}>
       {children}
     </ThemeContext.Provider>
   );
