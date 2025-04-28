@@ -12,7 +12,7 @@ const Profile = () => {
           {/* TODO: Check for status */}
           <div className="border circle gradient">
             <img
-              src={user.imageUrl}
+              src={user.imageUrl ? user.imageUrl : undefined}
               alt={user.name}
               width={48}
               height={48}

@@ -35,12 +35,6 @@ export const sidebarRoutes = [
     route: "/notifications",
     label: "notifications",
   },
-  {
-    imgURL: "/assets/icons/create.png",
-    darkImgURL: "/assets/icons/dark_create.png",
-    route: "/create",
-    label: "create",
-  }
 ];
 
 export const bottombarLinks = [

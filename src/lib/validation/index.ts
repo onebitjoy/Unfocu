@@ -43,3 +43,11 @@ export const SignInFormValidation = z.object({
 }).required(
   { email: true, password: true }
 )
+
+
+export const PostFormValidation = z.object({
+  caption: z.string().min(5).max(2002),
+  file: z.custom<File[]>(),
+  location: z.string().min(2).max(1000),
+  tags: z.string()
+})

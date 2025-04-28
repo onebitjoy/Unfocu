@@ -22,8 +22,8 @@ const SettingsMenu = () => {
     <DropdownMenu>
       <DropdownMenuTrigger className="w-full">
         <div className="flex items-center">
-          <img className='pe-2 size-12 md:size-8 lg:size-6' src={menuIcon} alt="settings" />
-          <div className="hidden lg:block font-medium dark:text-white text-sm capitalize">Settings</div>
+          <img className='size-12 md:size-8 lg:size-6' src={menuIcon} alt="settings" />
+          <div className="hidden lg:block ps-2 font-medium dark:text-white text-sm capitalize">Settings</div>
         </div>
       </DropdownMenuTrigger>
       <DropdownMenuContent className={isDark ? "w-64 font-medium bg-black text-white border-neutral-800 cursor-pointer" : "w-64 font-medium cursor-pointer"}>
