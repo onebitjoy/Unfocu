@@ -37,10 +37,10 @@ export const newPostStore = create<PostData & PostAction>()(
 function getPostContent() {
   //TODO: to be used inside post submission
   return {
-    caption: newPostStore(state => state.caption),
-    file: newPostStore(state => state.file),
-    location: newPostStore(state => state.location),
-    tags: newPostStore(state => state.tags),
+    caption: newPostStore.getState().caption,
+    file: newPostStore.getState().file,
+    location: newPostStore.getState().location,
+    tags: newPostStore.getState().tags,
 
   }
 }

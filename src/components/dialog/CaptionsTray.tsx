@@ -1,18 +1,39 @@
 import {
-  updatePostLocation, updatePostTags, updatePostCaption, newPostStore
+  updatePostLocation, updatePostTags, updatePostCaption, newPostStore,
+  getPostContent
 } from '@/store/postStore'
 
 import { useUserContext } from '@/context/AuthContext'
 import { JSX } from 'react'
-
+// import { createPost } from '@/lib/appwrite/api'
+import { useDialogStore } from '@/store/dialogStore'
+import { useCreatePost } from '@/lib/react-query/queryMutation'
 
 function CaptionsTray({ children }: { children: JSX.Element }) {
 
   const { user } = useUserContext()
   const caption = newPostStore(state => state.caption)
-
   const location = newPostStore(state => state.location)
   const tags = newPostStore(state => state.tags)
+  const { mutateAsync: createPost, isPending: isPostCreating } = useCreatePost()
+
+  async function handlePostSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault()
+    //TODO: to be used inside post submission
+    const { caption, location, tags, file } = getPostContent()
+    await createPost(
+      { caption, location, tags, file, userId: user.id }
+    )
+      .then(() => {
+        console.log("Closing dialog...")
+      })
+      .catch((reason) => {
+        console.log(reason)
+      })
+      .finally(() => {
+        useDialogStore.getState().action.setDialogOpen(false)
+      })
+  }
 
   return <div className="flex lg:flex-row flex-col justify-center items-stretch w-full max-w-[1200px] max-h-[800px] scroll-auto">
     {/* Carousel */}
@@ -30,17 +51,20 @@ function CaptionsTray({ children }: { children: JSX.Element }) {
         </h3>
       </div>
 
-      <div className='flex flex-col w-full h-full'>
+      <form className='flex flex-col w-full h-full' onSubmit={(e) => handlePostSubmit(e)}>
         <div className='flex mb-4 w-full'>
-          <textarea className='p-2 border-none outline-none w-full placeholder:text-sm' placeholder='Write caption, use @ to tag people' maxLength={2002}
+          <textarea className='p-2 border-none rounded outline-none focus-visible:ring-1 focus-visible:ring-neutral-300/30 w-full h-40 placeholder:text-sm'
+            maxLength={2002}
             value={caption}
+            placeholder='Add caption'
             onChange={(e) => updatePostCaption(e.target.value)}
           />
         </div>
+
         <div className='mb-4 w-full'>
           <label className='flex items-center'>
             <input
-              className='mr-1 p-2 w-full placeholder:text-sm'
+              className='mr-2 p-2 border-none rounded outline-none focus-visible:ring-1 focus-visible:ring-neutral-300/30 w-full placeholder:text-sm transition-all duration-500 ease-in-out'
               placeholder='Add location'
               value={location}
               onChange={(e) => updatePostLocation(e.target.value)}
@@ -55,7 +79,7 @@ function CaptionsTray({ children }: { children: JSX.Element }) {
         <div className='mb-4 w-full'>
           <label className='flex items-center'>
             <input
-              className='mr-1 p-2 w-full placeholder:text-sm'
+              className='mr-2 p-2 border-none rounded outline-none focus-visible:ring-1 focus-visible:ring-neutral-300/30 w-full placeholder:text-sm transition-all duration-500 ease-in-out'
               placeholder='Add tags'
               value={tags}
               onChange={(e) => updatePostTags(e.target.value)}
@@ -66,9 +90,8 @@ function CaptionsTray({ children }: { children: JSX.Element }) {
           </label>
         </div>
 
-        <button className='bg-blue-400 ml-auto px-4 py-1 rounded-lg ring-blue-400/60 text-white'>Share</button>
-      </div>
-
+        <button className='bg-white ml-auto px-4 py-1 rounded-lg ring-blue-400/60 font-semibold text-black tracking-wide' type="submit">Share</button>
+      </form>
     </div>
   </div>
 }
