@@ -1,12 +1,19 @@
 import { useEffect, useRef } from "react"
+import { useIsDialogOpen, useResetScreen, useSetDialogOpen } from "@/store/dialogStore"
 import CreatePostForm from "./CreatePostForm"
-import { usePostContext } from "@/context/PostContext"
-import { toast } from "sonner"
+import { resetNewPost } from "@/store/postStore"
 
 export default function CreatePostDialogTray() {
-  const { isDialogOpen, setDialogOpen, setFile, setFileUrl, setScreen, clearPostImagesAndResetScreen } = usePostContext()
+  const isDialogOpen = useIsDialogOpen()
+  const setDialogOpen = useSetDialogOpen()
+  const resetPost = resetNewPost()
+  const resetScreen = useResetScreen()
 
   const dialogRef = useRef<HTMLDialogElement | null>(null)
+  function handleClear() {
+    resetPost()
+    resetScreen()
+  }
 
   useEffect(() => {
     // this useEffect section is used to show modal whenever there is a change in isDialogOpen variable from the zustand store
@@ -17,6 +24,7 @@ export default function CreatePostDialogTray() {
     }
     if (!isDialogOpen && dialog.open) {
       dialog.close()
+      handleClear()
     }
   }, [isDialogOpen])
 
@@ -31,9 +39,7 @@ export default function CreatePostDialogTray() {
         const removePost = confirm("Want to undo all changes?")
         if (removePost) {
           setDialogOpen(!removePost)
-          setFile(null)
-          setFileUrl("")
-          setScreen("upload")
+          handleClear()
         }
       }
     }
@@ -56,10 +62,10 @@ export default function CreatePostDialogTray() {
       <div className="flex flex-col w-full h-full">
         <div className="flex justify-between items-center bg-black px-2 py-2 border-b border-b-neutral-400">
           <h2 className="ml-2 font-semibold text-white dark:text-white text-xl">Create Post</h2>
-          <button onClick={clearPostImagesAndResetScreen} className="mr-2 font-bold text-white">&#x2715;</button>
+          <button onClick={() => setDialogOpen(false)} className="mr-2 font-bold text-white">&#x2715;</button>
         </div>
 
-        <div className="w-full max-w-[1153px] h-full max-h-[1200px]">
+        <div>
           <CreatePostForm />
         </div>
       </div>

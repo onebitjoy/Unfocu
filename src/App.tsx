@@ -43,7 +43,7 @@ function App() {
       </Route>
 
     </Routes>
-    <Toaster richColors />
+    <Toaster richColors position="bottom-center" />
   </main>)
 }
 

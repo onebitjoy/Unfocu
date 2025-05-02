@@ -46,8 +46,8 @@ export const SignInFormValidation = z.object({
 
 
 export const PostFormValidation = z.object({
-  caption: z.string().min(5).max(2002),
-  file: z.custom<File[]>(),
-  location: z.string().min(2).max(1000),
-  tags: z.string()
+  file: z.custom<File[]>().optional(),
+  caption: z.string().min(5).max(2002).optional(),
+  location: z.string().min(2).max(1000).optional(),
+  tags: z.string().optional()
 })
