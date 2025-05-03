@@ -4,7 +4,7 @@ import { INewPost, INewUser } from "@/types";
 import { toast } from "sonner";
 
 
-//Create User
+// Create User
 export async function createUserAccount(user: INewUser) {
   // 1. Appwrite uses account.create function with positional arguments to create an account
   // 2. Saving the user to database
@@ -96,7 +96,7 @@ export async function logOutUserAccount() {
     console.log(error)
   }
 }
-
+// GET current user account
 export async function getCurrentUserAccount() {
   try {
     const currentAccount = await account.get();
@@ -127,39 +127,46 @@ export async function getCurrentUserAccount() {
   }
 }
 
+// CREATE new post -- supports multiple files uploads too
 export async function createPost(post: INewPost) {
-  console.log(post)
   try {
     // Upload Media File
-    const uploadedFile = await uploadFile(post.file[0])
-    if (!uploadedFile) throw Error
+    const uploadedFiles = await Promise.all(post.file.map(uploadFile))
+
+    if (uploadedFiles.some(file => !file)) throw Error("Some files couldn't be uploaded!")
 
     // get fileUrl
-    const fileUrl = getFilePreview(uploadedFile.$id)
-    if (!fileUrl) {
-      deleteFile(uploadedFile.$id)
+    const fileUrls = await Promise.all(
+      uploadedFiles.map(file => getFilePreview(file.$id))
+    )
+
+    if (fileUrls.some(urls => !urls)) {
+      await Promise.all(uploadedFiles.map(file => deleteFile(file.$id)))
       throw Error
     }
 
     // converting tags into array
     const tags = post.tags?.replace(/ /g, '').split(",") || []
+    const postValues = {
+      creator: post.userId,
+      caption: post.caption,
+      imageUrl: fileUrls,
+      imageId: uploadedFiles.map(file => file.$id),
+      location: post.location,
+      tags: tags
+    }
+
+    console.log(postValues)
 
     const newPost = await databases.createDocument(
       appwriteConfig.databaseId,
       appwriteConfig.postsCollectionId,
       ID.unique(),
-      {
-        creator: post.userId,
-        caption: post.caption,
-        imageUrl: fileUrl,
-        imageId: uploadedFile.$id,
-        location: post.location,
-        tags: tags
-      }
+      postValues
     )
 
     if (!newPost) {
-      await deleteFile(uploadedFile.$id)
+      await Promise.all(uploadedFiles.map(f => deleteFile(f.$id)));
       throw Error
     }
 
@@ -170,17 +177,21 @@ export async function createPost(post: INewPost) {
   }
 }
 
-export async function deleteFile(fileId: string) {
+// UPLOAD image to appwrite storage
+export async function uploadFile(imageFile: File) {
   try {
-    await storage.deleteFile(appwriteConfig.storageId, fileId)
-
-    return {
-      status: "ok"
-    }
+    const uploadedFile = await storage.createFile(
+      appwriteConfig.storageId,
+      ID.unique(),
+      imageFile
+    )
+    return uploadedFile
   } catch (error) {
     console.log(error)
   }
 }
+
+// GET file preview of the image
 export async function getFilePreview(fileId: string) {
   try {
     const fileUrl = storage.getFilePreview(
@@ -198,14 +209,14 @@ export async function getFilePreview(fileId: string) {
   }
 }
 
-export async function uploadFile(imageFile: File) {
+// DELETE a file from storage
+export async function deleteFile(fileId: string) {
   try {
-    const uploadedFile = await storage.createFile(
-      appwriteConfig.storageId,
-      ID.unique(),
-      imageFile
-    )
-    return uploadedFile
+    await storage.deleteFile(appwriteConfig.storageId, fileId)
+
+    return {
+      status: "ok"
+    }
   } catch (error) {
     console.log(error)
   }
