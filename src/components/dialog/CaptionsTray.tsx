@@ -5,7 +5,6 @@ import {
 
 import { useUserContext } from '@/context/AuthContext'
 import { JSX } from 'react'
-// import { createPost } from '@/lib/appwrite/api'
 import { useDialogStore } from '@/store/dialogStore'
 import { useCreatePost } from '@/lib/react-query/queryMutation'
 
@@ -21,18 +20,8 @@ function CaptionsTray({ children }: { children: JSX.Element }) {
     e.preventDefault()
     //TODO: to be used inside post submission
     const { caption, location, tags, file } = getPostContent()
-    await createPost(
-      { caption, location, tags, file, userId: user.id }
-    )
-      .then(() => {
-        console.log("Closing dialog...")
-      })
-      .catch((reason) => {
-        console.log(reason)
-      })
-      .finally(() => {
-        useDialogStore.getState().action.setDialogOpen(false)
-      })
+    await createPost({ caption, location, tags, file, userId: user.id })
+    useDialogStore.getState().action.setDialogOpen(false)
   }
 
   return <div className="flex lg:flex-row flex-col justify-center items-stretch w-full max-w-[1200px] max-h-[800px] scroll-auto">
