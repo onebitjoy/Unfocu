@@ -43,6 +43,13 @@
 
 ## References
 
+
+### Docs
+  1. [Google's web.dev](https://web.dev/)
+  2. [Mozilla Developer Network](https://developer.mozilla.org/en-US/)
+  3. [Tailwind](https://tailwindcss.com/docs/)
+
+
 ### UI breakpoints
 | Breakpoint Range     | Device Target              | UI Behavior Notes                                                                 | Tailwind Equivalent |
 |----------------------|----------------------------|------------------------------------------------------------------------------------|----------------------|
@@ -52,8 +59,3 @@
 | `1024px – 1279px`    | Small desktops/laptops     | Left-side nav bar appears, center-aligned feed, stories bar across the top       | `lg`                |
 | `1280px – 1439px`    | Standard desktops          | Multi-column layout: feed, stories, messages/sidebar (if signed in)              | `xl`                |
 | `>= 1440px`          | Large desktops / widescreens | More spacing around content, modals/DMs appear in-center rather than full screen | `2xl`               |
-
-### Docs
-  1. [Google's web.dev](https://web.dev/)
-  2. [Mozilla Developer Network](https://developer.mozilla.org/en-US/)
-  3. [Tailwind](https://tailwindcss.com/docs/)

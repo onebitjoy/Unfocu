@@ -14,7 +14,7 @@ function CaptionsTray({ children }: { children: JSX.Element }) {
   const caption = newPostStore(state => state.caption)
   const location = newPostStore(state => state.location)
   const tags = newPostStore(state => state.tags)
-  const { mutateAsync: createPost, isPending: isPostCreating } = useCreatePost()
+  const { mutateAsync: createPost } = useCreatePost()
 
   async function handlePostSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()

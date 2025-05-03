@@ -8,7 +8,7 @@ import AuthLayout from "./_auth/AuthLayout";
 import SignInForm from "./_auth/forms/SignInForm";
 import SignUpForm from "./_auth/forms/SignUpForm";
 import { RootLayout } from "./_root/RootLayout";
-import { HomePage, AllUsers, CreatePost, EditPost, Explore, PostDetails, Profile, Saved, UpdateProfile } from "./_root/pages";
+import { HomePage, AllUsers, EditPost, Explore, PostDetails, Profile, Saved, UpdateProfile } from "./_root/pages";
 import { useThemeContext } from "./context";
 import { useUserContext } from "./context/AuthContext";
 import Notifications from "./_root/pages/Notifications";
@@ -33,7 +33,6 @@ function App() {
         <Route index element={<HomePage />} />
         <Route path="notifications" element={<Notifications />} />
         <Route path="all-users" element={<AllUsers />} />
-        <Route path="create-post" element={<CreatePost />} />
         <Route path="explore" element={<Explore />} />
         <Route path="saved" element={<Saved />} />
         <Route path="edit-post/:id" element={<EditPost />} />

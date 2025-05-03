@@ -137,11 +137,11 @@ export async function createPost(post: INewPost) {
 
     // get fileUrl
     const fileUrls = await Promise.all(
-      uploadedFiles.map(file => getFilePreview(file.$id))
+      uploadedFiles.map(file => getFilePreview(file!.$id))
     )
 
     if (fileUrls.some(urls => !urls)) {
-      await Promise.all(uploadedFiles.map(file => deleteFile(file.$id)))
+      await Promise.all(uploadedFiles.map(file => deleteFile(file!.$id)))
       throw Error
     }
 
@@ -151,12 +151,10 @@ export async function createPost(post: INewPost) {
       creator: post.userId,
       caption: post.caption,
       imageUrl: fileUrls,
-      imageId: uploadedFiles.map(file => file.$id),
+      imageId: uploadedFiles.map(file => file!.$id),
       location: post.location,
       tags: tags
     }
-
-    console.log(postValues)
 
     const newPost = await databases.createDocument(
       appwriteConfig.databaseId,
@@ -166,7 +164,7 @@ export async function createPost(post: INewPost) {
     )
 
     if (!newPost) {
-      await Promise.all(uploadedFiles.map(f => deleteFile(f.$id)));
+      await Promise.all(uploadedFiles.map(f => deleteFile(f!.$id)));
       throw Error
     }
 

@@ -1,6 +1,5 @@
 export { default as HomePage } from "./HomePage"
 export { default as AllUsers } from "./AllUsers"
-export { default as CreatePost } from "./CreatePost"
 export { default as EditPost } from "./EditPost"
 export { default as Explore } from "./Explore"
 export { default as PostDetails } from "./PostDetails"
