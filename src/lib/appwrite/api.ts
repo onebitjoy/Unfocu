@@ -4,6 +4,7 @@ import { INewPost, INewUser } from "@/types";
 import { toast } from "sonner";
 
 
+// ================== USER
 // Create User
 export async function createUserAccount(user: INewUser) {
   // 1. Appwrite uses account.create function with positional arguments to create an account
@@ -127,6 +128,8 @@ export async function getCurrentUserAccount() {
   }
 }
 
+// ================== POST 
+
 // CREATE new post -- supports multiple files uploads too
 export async function createPost(post: INewPost) {
   try {
@@ -170,8 +173,8 @@ export async function createPost(post: INewPost) {
 
     return newPost
 
-  } catch (error) {
-    console.log(error)
+  } catch {
+    throw Error
   }
 }
 

@@ -7,6 +7,7 @@ import { useUserContext } from '@/context/AuthContext'
 import { JSX } from 'react'
 import { useDialogStore } from '@/store/dialogStore'
 import { useCreatePost } from '@/lib/react-query/queryMutation'
+import { toast } from 'sonner'
 
 function CaptionsTray({ children }: { children: JSX.Element }) {
 
@@ -20,8 +21,15 @@ function CaptionsTray({ children }: { children: JSX.Element }) {
     e.preventDefault()
     //TODO: to be used inside post submission
     const { caption, location, tags, file } = getPostContent()
-    await createPost({ caption, location, tags, file, userId: user.id })
     useDialogStore.getState().action.setDialogOpen(false)
+    toast.promise(
+      createPost({ caption, location, tags, file, userId: user.id }),
+      {
+        loading: "Uploading post...",
+        success: "Post uploaded",
+        error: (err) => err.message || "Upload failed",
+      }
+    );
   }
 
   return <div className="flex lg:flex-row flex-col justify-center items-stretch w-full max-w-[1200px] max-h-[800px] scroll-auto">
