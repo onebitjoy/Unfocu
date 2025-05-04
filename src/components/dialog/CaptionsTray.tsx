@@ -19,7 +19,6 @@ function CaptionsTray({ children }: { children: JSX.Element }) {
 
   async function handlePostSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
-    //TODO: to be used inside post submission
     const { caption, location, tags, file } = getPostContent()
     useDialogStore.getState().action.setDialogOpen(false)
     toast.promise(
