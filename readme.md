@@ -1,5 +1,8 @@
 # Technologies used
 
+### Currently Implementing
+  1. Homepage basic structure with styling
+
 ### Languages - 
   HTML(JSX), CSS(Tailwind), TypeScript
 
