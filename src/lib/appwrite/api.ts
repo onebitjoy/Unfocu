@@ -2,6 +2,7 @@ import { AppwriteException, ID, ImageGravity, Query } from "appwrite";
 import { account, appwriteConfig, avatars, databases, storage } from "./config";
 import { INewPost, INewUser } from "@/types";
 import { toast } from "sonner";
+import { resetNewPost } from "@/store/postStore";
 
 
 // ================== USER
@@ -175,6 +176,8 @@ export async function createPost(post: INewPost) {
 
   } catch {
     throw Error
+  } finally {
+    resetNewPost()
   }
 }
 
