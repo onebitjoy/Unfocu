@@ -5,6 +5,8 @@
 
 body {
   font-family: "Instagram Sans", sans-serif;
+  /* overflow: hidden; */
+  overflow-x: hidden;
 }
 
 :root {
@@ -150,15 +152,42 @@ input {
   background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
 }
 
-/* Tailwind CSS */
-.scrollbar-hidden {
-  scrollbar-width: none;
-  /* Firefox */
-  -ms-overflow-style: none;
-  /* Internet Explorer 10+ */
+::-webkit-scrollbar {
+  background: #000;
+  width: 2px;
+  height: 6px;
 }
 
-.scrollbar-hidden::-webkit-scrollbar {
-  display: none;
-  /* Chrome, Safari, Opera */
+::-webkit-scrollbar-thumb {
+  background: rgba(254, 255, 255, 0.20);
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover,
+::-webkit-scrollbar-thumb:active {
+  background: rgba(254, 255, 255, 0.50);
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: black;
+}
+
+.loadingbox {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  border: 4px solid gray;
+  border-right: 4px solid white;
+  animation: loadingspinner 800ms linear Infinite both;
+}
+
+@keyframes loadingspinner {
+  0% {
+    rotate: 0deg;
+  }
+
+  100% {
+    rotate: 360deg;
+  }
 }
