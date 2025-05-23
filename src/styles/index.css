@@ -169,11 +169,20 @@ input {
   border-radius: 10px;
 }
 
-::-webkit-scrollbar-track {
+/* ::-webkit-scrollbar-track {
   background: black;
-}
+} */
 
 .loadingbox {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  border: 4px solid white;
+  border-right: 4px solid black;
+  animation: loadingspinner 800ms linear Infinite both;
+}
+
+.loadingboxdark {
   width: 2rem;
   height: 2rem;
   border-radius: 50%;
