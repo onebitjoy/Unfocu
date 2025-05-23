@@ -1,8 +1,9 @@
-import { AppwriteException, ID, ImageGravity, Query } from "appwrite";
+import { AppwriteException, ID, Query } from "appwrite";
 import { account, appwriteConfig, avatars, databases, storage } from "./config";
 import { INewPost, INewUser } from "@/types";
 import { toast } from "sonner";
 import { resetNewPost } from "@/store/postStore";
+import imageCompression from "browser-image-compression";
 
 
 // ================== USER
@@ -184,10 +185,19 @@ export async function createPost(post: INewPost) {
 // UPLOAD image to appwrite storage
 export async function uploadFile(imageFile: File) {
   try {
+    // returns a blob
+    const compressedBlob = await compressFile(imageFile)
+
+    // remakes the file from the blob
+    const compressedFile = new File([compressedBlob], compressedBlob.name, {
+      type: compressedBlob.type,
+    });
+
+    // uploads usually
     const uploadedFile = await storage.createFile(
       appwriteConfig.storageId,
       ID.unique(),
-      imageFile
+      compressedFile
     )
     return uploadedFile
   } catch (error) {
@@ -195,18 +205,37 @@ export async function uploadFile(imageFile: File) {
   }
 }
 
+// COMPRESSION of uploadFile
+async function compressFile(file: File) {
+  const compressionOptions = {
+    maxSizeMB: 1,
+    maxWidthOrHeight: 1920,
+    useWebWorker: true,
+  }
+  try {
+    const compressedFile = await imageCompression(file, compressionOptions);
+    return compressedFile;
+  } catch (error) {
+    console.error('Image compression failed', error);
+    return file;
+  }
+}
+
+
 // GET file preview of the image
 export async function getFilePreview(fileId: string) {
   try {
+    /* FREE PLAN DOESN'T ALLOW FILE COMPRESSION 
     const fileUrl = storage.getFilePreview(
       appwriteConfig.storageId,
       fileId,
-      2000,
-      2000,
+      600,
+      0,
       ImageGravity.Top,
-      100
+      70
     )
-
+      */
+    const fileUrl = storage.getFileView(appwriteConfig.storageId, fileId)
     return fileUrl
   } catch (error) {
     console.log(error)
