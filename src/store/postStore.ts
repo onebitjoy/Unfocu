@@ -47,7 +47,8 @@ function getPostContent() {
 
 // reset post 
 function resetNewPost() {
-  return newPostStore(state => state.resetPost)
+  // return newPostStore(state => state.resetPost)
+  return newPostStore.getState().resetPost
 }
 
 // ===== Custom update function for each field =====
