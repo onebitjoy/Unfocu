@@ -16,20 +16,22 @@ function CaptionsTray({ children }: { children: JSX.Element }) {
   const location = newPostStore(state => state.location)
   const tags = newPostStore(state => state.tags)
   const { mutateAsync: createPost } = useCreatePost()
+  const setDialogopen = useDialogStore(state => state.action.setDialogOpen);
 
   async function handlePostSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
     const { caption, location, tags, file } = getPostContent()
-    useDialogStore.getState().action.setDialogOpen(false)
-    toast.promise(
-      createPost({ caption, location, tags, file, userId: user.id }),
-      {
-        loading: "Uploading post...",
-        success: "Post uploaded",
-        error: (err) => err.message || "Upload failed",
-      }
-    );
+    setDialogopen(false)
+
+    try {
+      await createPost({ caption, location, tags, file, userId: user.id })
+      toast.success("Post uploaded!")
+    } catch {
+      toast.error("Error uploading post!")
+    }
+
   }
+
 
   return <div className="flex lg:flex-row flex-col justify-center items-stretch w-full max-w-[1200px] max-h-[800px] scroll-auto">
     {/* Carousel */}

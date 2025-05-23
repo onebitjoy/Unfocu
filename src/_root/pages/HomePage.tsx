@@ -1,7 +1,11 @@
 import Loading from "@/components/Loading";
+import { useGetRecentPosts } from "@/lib/react-query/queryMutation";
+import { Models } from "appwrite";
+import { Suspense } from "react";
 
 function HomePage() {
-  const isPostLoading = true;
+
+  const { data: posts, isPending: isPostLoading } = useGetRecentPosts()
 
   return (
     <main className="flex justify-center dark:bg-black border border-red-400 w-full dark:text-white">
@@ -23,7 +27,32 @@ function HomePage() {
 
         {/* Post Feed */}
         <div className="border w-full min-h-max grow">
-          {isPostLoading ? <Loading /> : <p className="text-white">Post loaded</p>}
+          {/* {
+            isPostLoading && !posts ? (
+              <Loading />) : (
+              <ul>
+                {
+                  posts?.documents.map((post: Models.Document) => (
+                    <li key={post.$id}>
+                      {post.caption}
+                    </li>
+                  ))
+                }
+              </ul>)
+          } */}
+          <div className="w-full h-full">
+            <Suspense fallback={<Loading />}>
+              <ul>
+                {
+                  posts?.documents.map((post: Models.Document) => (
+                    <li key={post.$id}>
+                      {post.caption}
+                    </li>
+                  ))
+                }
+              </ul>
+            </Suspense>
+          </div>
         </div>
       </div>
 
