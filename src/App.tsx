@@ -12,6 +12,7 @@ import { HomePage, AllUsers, EditPost, Explore, PostDetails, Profile, Saved, Upd
 import { useThemeContext } from "./context";
 import { useUserContext } from "./context/AuthContext";
 import Notifications from "./_root/pages/Notifications";
+import PageNotFound from "./commonpath/PageNotFound";
 
 function App() {
 
@@ -40,6 +41,8 @@ function App() {
         <Route path="profile/:id" element={<Profile />} />
         <Route path="update-profile/:id" element={<UpdateProfile />} />
       </Route>
+
+      <Route path="*" element={<PageNotFound />} />
 
     </Routes>
     <Toaster richColors position="bottom-center" />
