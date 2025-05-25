@@ -1,7 +1,7 @@
-import { INewPost, INewUser } from "@/types"
+import { Comment, INewPost, INewUser } from "@/types"
 // import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
-import { createPost, createUserAccount, getRecentPosts, logOutUserAccount, signInUserAccount } from "../appwrite/api"
+import { createPost, createUserAccount, getRecentPosts, logOutUserAccount, signInUserAccount, writeComment } from "../appwrite/api"
 import { QUERY_KEYS } from "./queryKey"
 
 // React query is acting as a plug between the api functions and the frontend by being the caller
@@ -44,5 +44,11 @@ export function useGetRecentPosts() {
   return useQuery({
     queryKey: [QUERY_KEYS.GET_RECENT_POSTS],
     queryFn: getRecentPosts
+  })
+}
+
+export function useWriteCommentToPost() {
+  return useMutation({
+    mutationFn: (comment: Comment) => writeComment(comment)
   })
 }

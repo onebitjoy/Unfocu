@@ -15,7 +15,7 @@ function HomePage() {
       <div className="flex flex-col lg:mr-8">
 
         {/* Stories */}
-        <div className="gap-2 grid grid-flow-col auto-cols-auto mx-auto my-4 w-dvw md:w-[600px] overflow-x-auto overscroll-contain">
+        <div className="gap-2 grid grid-flow-col auto-cols-auto mx-auto my-4 w-dvw md:w-[600px] overflow-contain overflow-x-auto">
           {
             Array
               .from([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20])
@@ -29,7 +29,7 @@ function HomePage() {
 
         {/* Post Feed */}
         {/* TODO: remove border */}
-        <div className="flex-1 w-full md:max-w-[600px] overflow-y-scroll">
+        <div className="flex-1 w-full md:max-w-[600px]">
           <div className="w-full h-full">
             <Suspense fallback={<Loading />}>
               <ul className="w-full">

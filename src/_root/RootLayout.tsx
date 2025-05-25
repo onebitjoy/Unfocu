@@ -12,7 +12,7 @@ export const RootLayout = () => {
       <Topbar />
       <div className="flex flex-1">
         <Sidebar />
-        <section className="flex flex-1 h-full overflow-hidden">
+        <section className="flex flex-1 h-full">
           <CreatePostDialogTray />
           <Outlet />
         </section>

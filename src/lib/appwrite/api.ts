@@ -1,6 +1,6 @@
 import { AppwriteException, ID, Query } from "appwrite";
 import { account, appwriteConfig, avatars, databases, storage } from "./config";
-import { INewPost, INewUser } from "@/types";
+import { Comment, INewPost, INewUser } from "@/types";
 import { toast } from "sonner";
 import { resetNewPost } from "@/store/postStore";
 import imageCompression from "browser-image-compression";
@@ -266,4 +266,25 @@ export async function getRecentPosts() {
   if (!posts) throw Error
 
   return posts
+}
+
+
+export async function writeComment(comment: Comment) {
+  try {
+    const result = await databases.createDocument(
+      appwriteConfig.databaseId,
+      appwriteConfig.commentsCollectionId,
+      ID.unique(),
+      comment
+    )
+
+    if (!result) {
+      throw Error
+    }
+
+    return comment
+
+  } catch {
+    throw Error("Can't write comment!")
+  }
 }
