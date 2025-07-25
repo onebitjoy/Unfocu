@@ -18,11 +18,12 @@ function App() {
 
   const { isDark } = useThemeContext()
   const { isLoading } = useUserContext()
-  const loadingColors = isDark ? "w-dvw h-dvh flex justify-center items-center bg-black" : "w-dvw h-dvh flex justify-center items-center"
+  const loadingColors = isDark ? "w-dvw h-dvh flex justify-center items-center bg-black flex-col" : "w-dvw h-dvh flex justify-center items-center flex-col"
   return isLoading ? (<div className={loadingColors}>
-    <img src="/assets/PixagramIcon.png" alt="Pixagram" width={96} height={96} />
-    <p className="m-auto mt-16 w-80 text-bold text-3xl text-center text-pretty">Hello, Appwrite is having some problems on Airtel networks in India! So, it might not be accessible to some users!</p>
-  </div>) : (<main className={`scrollbar-hidden flex h-screen overflow-auto dark:text-white interfont ${isDark ? "dark" : ""} dark:bg-black`}>
+    <img src="/assets/PixagramIcon.png" alt="Pixagram" width={96} height={96} className="mt-32" />
+    <p className="m-auto mt-16 w-200 text-bold text-red-400 text-lg text-center text-pretty">Hello, Appwrite is having some problems on Airtel networks in India! So, it might not be accessible to some users! <br />
+      <span className="text-blue-400">So, this site might not be working correctly even when the code is working! Please visit my github <a href="https://github.com/onebitjoy/Unfocu" target="_blank" className="decoration-wavy underline underline-offset-2">Pixagram</a></span></p>
+  </div >) : (<main className={`scrollbar-hidden flex h-screen overflow-auto dark:text-white interfont ${isDark ? "dark" : ""} dark:bg-black`}>
     <Routes>
       {/* private routes */}
       <Route path="auth" element={<AuthLayout />}>
