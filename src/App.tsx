@@ -21,6 +21,7 @@ function App() {
   const loadingColors = isDark ? "w-dvw h-dvh flex justify-center items-center bg-black" : "w-dvw h-dvh flex justify-center items-center"
   return isLoading ? (<div className={loadingColors}>
     <img src="/assets/PixagramIcon.png" alt="Pixagram" width={96} height={96} />
+    <p className="m-auto mt-16 w-80 text-bold text-3xl text-center text-pretty">Hello, Appwrite is having some problems on Airtel networks in India! So, it might not be accessible to some users!</p>
   </div>) : (<main className={`scrollbar-hidden flex h-screen overflow-auto dark:text-white interfont ${isDark ? "dark" : ""} dark:bg-black`}>
     <Routes>
       {/* private routes */}
